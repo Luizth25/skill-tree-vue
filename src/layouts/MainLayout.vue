@@ -17,8 +17,7 @@ import Home from '../pages/Home.vue';
 
 <style scoped>
 .layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
+  display: flex;
   height: 100vh;
   background: #121212;
   color: #fff;
@@ -26,11 +25,11 @@ import Home from '../pages/Home.vue';
 
 .sidebar {
   background: #181818;
-  padding: 16px;
+  padding: 8px;
 }
 
 .content {
-  padding: 24px;
+  padding: 16px;
   overflow: hidden;
 }
 </style>

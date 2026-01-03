@@ -1,22 +1,20 @@
 <template>
   <div class="tree">
     <SkillNode
-      v-for="skill in skills"
+      v-for="skill in store.unlockedSkills"
       :key="skill.id"
       :skill="skill"
+      @click="store.gainXp(skill.id)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useSkillStore } from '../stores/skillStore';
 import SkillNode from './SkillNode.vue';
 
-const skills = [
-  { id: 1, name: 'HTML' },
-  { id: 2, name: 'CSS' },
-  { id: 3, name: 'JavaScript' },
-  { id: 4, name: 'Vue' }
-]
+const store = useSkillStore()
+
 </script>
 
 <style scoped>

@@ -10,5 +10,6 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 200px;
   }
 </style>
