@@ -1,49 +1,60 @@
 <script setup lang="ts">
-  import XPBar from './XPBar.vue';
-  
-  defineProps<{
-    skill: {
-      id: string
-      name: string
-      xp: number;
-      maxXp: number;
-      level: number
-      unlocked: boolean
-    }
-  }>()
+defineProps<{
+  skill: {
+    id: string;
+    name: string;
+    level: number;
+    unlocked: boolean;
+    maxLevel: number;
+  };
+  canUpgrade: boolean;
+  canDowngrade: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: "upgrade"): void;
+  (e: "downgrade"): void;
+}>();
 </script>
 
 <template>
-  <div 
-  class="node"
-  :class="{
-    locked: !skill.unlocked,
-    levelup: skill.xp === 0 && skill.level > 0
-  }"
-  >
-    {{ skill.name }}
-    <small>LV {{ skill.level }}</small>
-    <XPBar
-    v-if="skill.unlocked"
-    :xp="skill.xp"
-    :max-xp="skill.maxXp"
-    />
+  <div class="node" :class="{ locked: !skill.unlocked }">
+    <div style="display: flex; flex-direction: column;">
+      <strong>{{ skill.name }}</strong>
+      <small>LV {{ skill.level }} / {{ skill.maxLevel }}</small>
+    </div>
+    <div class="button-container">
+      <button
+        v-if="canDowngrade"
+        class="action-button"
+        @click.stop="emit('downgrade')"
+      >
+        -
+      </button>
+
+      <button 
+        v-if="canUpgrade" 
+        class="action-button"
+        @click.stop="emit('upgrade')"
+      >+</button>
+
+    </div>
   </div>
 </template>
 
 <style scoped>
 .node {
-  display: flex;
+  position: relative;
   flex-direction: column;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  gap: 8px;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
   background: #222;
   border: 2px solid #444;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   transition: all 0.2s ease;
 }
 
@@ -57,19 +68,23 @@
   pointer-events: none;
 }
 
-.levelup {
-  animation: pulse 0.4s ease;
+.button-container {
+  display: flex;
+  gap: 4px;
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 rgba(124,124,255,0.0);
-  }
-  50% {
-    box-shadow: 0 0 16px rgba(124,124,255,0.8);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(124,124,255,0.0);
-  }
+.action-button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 4px 12px;
+  color: #fff;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
+
+.action-button:hover {
+  border-color: #646cff;
+}
+
 </style>
